@@ -19,4 +19,23 @@ FROM address , customer, customeraddress
 WHERE customer.CustomerID = customeraddress.CustomerID AND customeraddress.AddressID = address.AddressID 
 AND customer.CustomerID = 40;
 
+-- 4.	Challenge Insert: Add a home address for customer with account number AW00000222. Address is 1 Churchill Square Edmonton AB A1A 1A1
+
+BEGIN;
+
+SELECT address.AddressID, address.AddressLine1, address.City, address.StateProvinceID, address.PostalCode, customeraddress.AddressTypeID
+FROM address , customer, customeraddress
+WHERE address.AddressID = customeraddress.AddressID AND customer.CustomerID = customeraddress.CustomerID 
+AND customer.AccountNumber = 'AW00000222';
+
+INSERT INTO customeraddress (AddressID, AddressTypeID) 
+  VALUES(LAST_INSERT_ID(), 2,);
+
+INSERT INTO address (AddressLine1, City, StateProvinceID, PostalCode)
+  VALUES('1 Churchill Square', 'Edmonton', 1, 'A1A 1A1');
+
+COMMIT;
+
+
+
 
