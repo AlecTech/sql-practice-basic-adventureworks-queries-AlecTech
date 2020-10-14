@@ -28,14 +28,14 @@ FROM address , customer, customeraddress
 WHERE address.AddressID = customeraddress.AddressID AND customer.CustomerID = customeraddress.CustomerID 
 AND customer.AccountNumber = 'AW00000222';
 
-INSERT INTO customeraddress (AddressID, AddressTypeID) 
-  VALUES(LAST_INSERT_ID(), 2,);
-
 INSERT INTO address (AddressLine1, City, StateProvinceID, PostalCode)
   VALUES('1 Churchill Square', 'Edmonton', 1, 'A1A 1A1');
 
+INSERT INTO customeraddress (AddressID, CustomerID, AddressTypeID) 
+  VALUES(
+    (SELECT AddressID FROM address WHERE AddressLine1 = '1 Churchill Square'),
+    (SELECT CustomerID FROM customer WHERE AccountNumber = 'AW00000222'),
+    (SELECT AddressTypeID FROM addresstype WHERE Name = 'Home')
+    );
+
 COMMIT;
-
-
-
-
